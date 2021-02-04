@@ -1,0 +1,42 @@
+﻿@model ShiftIn.Models.Profile
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Your Profile</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" placeholder="Your identity on the site" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Picture" class="control-label">Upload a picture of yourself or your car</label>
+                <input asp-for="Upload" type="file" multiple>
+                <span asp-validation-for="Upload" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label">City your located</label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
