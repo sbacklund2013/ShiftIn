@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace Shiftin.Controllers
 {
@@ -22,6 +23,11 @@ namespace Shiftin.Controllers
         // GET: Interests
         public async Task<IActionResult> Index()
         {
+            //Check for interests
+            
+
+            //if not goto add screen
+
             return View(await _context.Interest.ToListAsync());
         }
 
@@ -46,7 +52,16 @@ namespace Shiftin.Controllers
         // GET: Interests/Create
         public IActionResult Create()
         {
-            return View();
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Profiles", "Create");
+            }
+            
         }
 
         // POST: Interests/Create
@@ -56,9 +71,17 @@ namespace Shiftin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Interest interest)
         {
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            Profile Profile =(Profile) await _context.Profiles.Include(prof=>prof.Interests).FirstOrDefaultAsync(pid => pid.Id == profileid);
             if (ModelState.IsValid)
             {
-                _context.Add(interest);
+                if(Profile.Interests == null)
+                {
+                    Profile.Interests = new List<Interest>();
+                }
+                Profile.Interests.Add(interest);
+                              
+                _context.Update(Profile);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

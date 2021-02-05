@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace Shiftin.Controllers
 {
@@ -46,7 +47,15 @@ namespace Shiftin.Controllers
         // GET: Cars/Create
         public IActionResult Create()
         {
-            return View();
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Profiles", "Create");
+            }
         }
 
         // POST: Cars/Create
@@ -54,10 +63,18 @@ namespace Shiftin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Year,Model,Description")] Car car)
+        public async Task<IActionResult> Create([Bind("Id,Make,Year,Model,Description")] Car car)
         {
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            Profile Profile = (Profile)await _context.Profiles.Include(prof=>prof.Cars).FirstOrDefaultAsync(pid => pid.Id == profileid);
             if (ModelState.IsValid)
             {
+                if (Profile.Cars == null)
+                {
+                    Profile.Cars = new List<Car>();
+                }
+                Profile.Cars.Add(car);
+
                 _context.Add(car);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -498,3 +498,8 @@ C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Interes
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Interests\Details.cshtml.g.cs
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Interests\Edit.cshtml.g.cs
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Interests\Index.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Create.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Delete.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Details.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Edit.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Index.cshtml.g.cs

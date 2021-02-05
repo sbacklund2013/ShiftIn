@@ -11,7 +11,7 @@ namespace ShiftIn.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string Make { get; set; }
         [Required]
         public string Year { get; set; }
         [Required]

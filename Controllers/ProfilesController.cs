@@ -18,12 +18,12 @@ namespace Shiftin.Controllers
 {
     public class ProfilesController : Controller
     {
-        //imageupload
-        
+        //imageupload for path        
         private readonly IWebHostEnvironment _environment;
         ///
 
         private readonly ApplicationDbContext _context;
+        //identity framework user session management
         private readonly UserManager<ApplicationUser> _userManager;
         public ProfilesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IWebHostEnvironment environment)
         {
@@ -37,17 +37,29 @@ namespace Shiftin.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
-            var profile = _context.Profiles.FirstOrDefault(p => p.User.Id.Equals(userId));
-            if(profile == null)
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if(profileid != null)
             {
-                return RedirectToAction(nameof(Create));
+                return View(await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).FirstOrDefaultAsync(pid => pid.Id.Equals(profileid)));
             }
             else
             {
-                Profile userprofile = (Profile)profile;
-                return View(userprofile);
+                //Check if user has profile
+                var profile = await _context.Profiles.Include(pr=>pr.Interests).Include(pr=>pr.Cars).FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                if (profile == null)
+                {
+                    return RedirectToAction(nameof(Create));
+                }
+                else
+                {
+                    //Return profile view
+                    Profile userprofile = (Profile)profile;
+                    HttpContext.Session.SetInt32("ProfileId", userprofile.Id);
+                    return View(userprofile);
+                }
             }
-            return NotFound();
+            
+            
         }
 
         // GET: Profiles/Details/5
@@ -106,8 +118,18 @@ namespace Shiftin.Controllers
                 }
 
                 _context.Add(profile);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var result =await _context.SaveChangesAsync();
+                Console.Out.WriteLine(result.ToString());
+                if (result> 0)
+                {
+                    HttpContext.Session.SetInt32("ProfileId", profile.Id );
+                    return RedirectToAction("Index","Interests");
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
             return View(profile);
         }
