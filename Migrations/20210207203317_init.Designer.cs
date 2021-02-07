@@ -10,8 +10,8 @@ using Shiftin.Data;
 namespace Shiftin.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210128022627_relationship_fix")]
-    partial class relationship_fix
+    [Migration("20210207203317_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace Shiftin.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
+
+            modelBuilder.Entity("EventProfile", b =>
+                {
+                    b.Property<int>("AttendeesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MeetsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttendeesId", "MeetsId");
+
+                    b.HasIndex("MeetsId");
+
+                    b.ToTable("EventProfile");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -166,11 +181,11 @@ namespace Shiftin.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Model")
+                    b.Property<string>("Make")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -220,10 +235,7 @@ namespace Shiftin.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatorId1")
+                    b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -240,7 +252,7 @@ namespace Shiftin.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId1");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Events");
                 });
@@ -268,14 +280,14 @@ namespace Shiftin.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("ParentId")
@@ -285,14 +297,11 @@ namespace Shiftin.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Posts");
                 });
@@ -327,20 +336,17 @@ namespace Shiftin.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("ApplicationUserId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ApplicationUserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PostId")
+                    b.Property<int?>("ProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId1");
-
                     b.HasIndex("PostId");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Likes");
                 });
@@ -357,14 +363,18 @@ namespace Shiftin.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Profiles");
                 });
@@ -411,9 +421,6 @@ namespace Shiftin.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ProfileId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -434,9 +441,22 @@ namespace Shiftin.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("ProfileId");
-
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("EventProfile", b =>
+                {
+                    b.HasOne("ShiftIn.Models.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("AttendeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShiftIn.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("MeetsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -508,26 +528,24 @@ namespace Shiftin.Migrations
                 {
                     b.HasOne("Shiftin.Models.ApplicationUser", "Creator")
                         .WithMany()
-                        .HasForeignKey("CreatorId1");
+                        .HasForeignKey("CreatorId");
 
                     b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("ShiftIn.Models.ForumPost", b =>
                 {
+                    b.HasOne("ShiftIn.Models.Profile", "Author")
+                        .WithMany("AuthoredPosts")
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("ShiftIn.Models.ForumCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.HasOne("Shiftin.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Author");
 
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShiftIn.Models.Interest", b =>
@@ -539,28 +557,28 @@ namespace Shiftin.Migrations
 
             modelBuilder.Entity("ShiftIn.Models.Like", b =>
                 {
-                    b.HasOne("Shiftin.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId1");
-
                     b.HasOne("ShiftIn.Models.ForumPost", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("Shiftin.Models.ApplicationUser", b =>
-                {
                     b.HasOne("ShiftIn.Models.Profile", "Profile")
                         .WithMany()
                         .HasForeignKey("ProfileId");
 
+                    b.Navigation("Post");
+
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("ShiftIn.Models.Profile", b =>
+                {
+                    b.HasOne("Shiftin.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShiftIn.Models.Car", b =>
@@ -570,6 +588,8 @@ namespace Shiftin.Migrations
 
             modelBuilder.Entity("ShiftIn.Models.Profile", b =>
                 {
+                    b.Navigation("AuthoredPosts");
+
                     b.Navigation("Cars");
 
                     b.Navigation("Interests");

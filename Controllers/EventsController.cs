@@ -7,9 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Net;
 
 namespace Shiftin.Controllers
 {
+    [Authorize]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,9 +24,36 @@ namespace Shiftin.Controllers
             _context = context;
         }
 
-        // GET: Events
+        public async Task<IActionResult> SessionCheck()
+        {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid == null)
+            {
+                var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                if (profile == null)
+                {
+                    return new ContentResult
+                    {
+                        ContentType = "text/html",
+                        StatusCode = (int)HttpStatusCode.OK,
+                        Content = "<p>You need to create a profile before you can do that. </p>"
+                    };
+                }
+
+                //Return profile view
+                Profile userprofile = (Profile)profile;
+                HttpContext.Session.SetInt32("ProfileId", userprofile.Id); ;
+
+            }
+
+            return View();
+        }
+
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Events.ToListAsync());
         }
 
@@ -33,7 +65,7 @@ namespace Shiftin.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var @event = await _context.Events.Include(e => e.Attendees)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
@@ -41,6 +73,50 @@ namespace Shiftin.Controllers
             }
 
             return View(@event);
+        }
+        public async Task<IActionResult> Attend(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var @event = await _context.Events.Include(e => e.Attendees)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (@event == null)
+            {
+                return NotFound();
+            }
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid != null)
+            {
+                //RSVP for event
+                Profile prof = (Profile)await _context.Profiles.Include(pr => pr.Meets).FirstOrDefaultAsync(pid => pid.Id.Equals(profileid));
+                if (!@event.Attendees.Contains(prof))
+                {
+                    @event.Attendees.Add(prof);
+                    _context.SaveChanges();
+                }
+                return View("Details", @event);
+            }
+            else
+            {
+                //no profile session set
+                //check db
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+                var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                if (profile == null)
+                {
+                    return View("ProfileError");
+                }
+
+                //Return profile view
+                Profile userprofile = (Profile)profile;
+                HttpContext.Session.SetInt32("ProfileId", userprofile.Id); 
+
+            }
+            
+            return View("Details", @event);
         }
 
         // GET: Events/Create

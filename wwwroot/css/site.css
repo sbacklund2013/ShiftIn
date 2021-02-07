@@ -1,5 +1,25 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.banner-image {
+    /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+    background-image: url("../Images/car companies.png");
+    height:600px;
+    /* Position and center the image to scale nicely on all screens */
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    
+}
+.banner-text {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+}
 
 a.navbar-brand {
   white-space: normal;

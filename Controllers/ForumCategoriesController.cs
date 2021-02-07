@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shiftin.Controllers
 {
+    [Authorize]
     public class ForumCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

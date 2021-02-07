@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Shiftin.Controllers
 {
+    [Authorize]
     public class CarsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +26,31 @@ namespace Shiftin.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Car.ToListAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid != null)
+            {
+                var profile = await _context.Profiles.Include(pr => pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(pid => pid.Id.Equals(profileid));
+                Profile userprofile = (Profile)profile;
+                return View(userprofile.Cars);
+            }
+            else
+            {
+                //Check if user has profile
+                var profile = await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                if (profile == null)
+                {
+                    return View("ProfileError");
+                }
+                else
+                {
+                    //Return profile view
+                    Profile userprofile = (Profile)profile;
+                    HttpContext.Session.SetInt32("ProfileId", userprofile.Id);
+                    return View(userprofile.Cars);
+                }
+            }
+
         }
 
         // GET: Cars/Details/5

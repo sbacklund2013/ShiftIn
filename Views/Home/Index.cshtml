@@ -1,8 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .container{
+        width:100%;
+        padding:0px;
+        max-width:none;
+    }
+</style>
+<div class="banner-image">
+    <div class="banner-text">
+        <h1 class="display-4">Welcome to Shiftin</h1>
+        <p class="font-weight-bold">Make a profile | Add your cars | Join a meet | Talk on the Forum </p>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-dark text-white">Join Now</a>
+    </div>
 </div>
+

@@ -21,5 +21,6 @@ namespace Shiftin.Data
         public DbSet<ShiftIn.Models.ForumCategory> ForumCategory { get; set; }
         public DbSet<ShiftIn.Models.Interest> Interest { get; set; }
         public DbSet<ShiftIn.Models.Car> Car { get; set; }
+        public DbSet<ShiftIn.Models.CarImage> CarImage { get; set; }
     }
 }

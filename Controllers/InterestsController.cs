@@ -8,27 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shiftin.Controllers
 {
+    [Authorize]
     public class InterestsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         public InterestsController(ApplicationDbContext context)
         {
+            
             _context = context;
         }
 
         // GET: Interests
         public async Task<IActionResult> Index()
         {
-            //Check for interests
-            
-
-            //if not goto add screen
-
-            return View(await _context.Interest.ToListAsync());
+            var profile = await _context.Profiles.Include(p => p.Interests).FirstOrDefaultAsync(prof => prof.Id == HttpContext.Session.GetInt32("ProfileId"));
+            Profile prof = (Profile)profile;
+            return View(prof.Interests);
         }
 
         // GET: Interests/Details/5

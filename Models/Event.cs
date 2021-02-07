@@ -19,5 +19,7 @@ namespace ShiftIn.Models
         public string Location { get; set; }
 
         public ApplicationUser Creator { get; set; }
+
+        public ICollection<Profile> Attendees { get; set; }
     }
 }

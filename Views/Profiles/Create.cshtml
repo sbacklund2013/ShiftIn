@@ -17,13 +17,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Picture" class="control-label">Upload a picture of yourself or your car</label>
-                <input asp-for="Upload" type="file" multiple>
+                <input asp-for="Upload" accept="image/*" type="file" multiple>
                 <span asp-validation-for="Upload" class="text-danger"></span>
 
             </div>
             <div class="form-group">
                 <label asp-for="Location" class="control-label">City your located</label>
-                <input asp-for="Location" class="form-control" />
+                <input placeholder="Los Angeles,CA" asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="form-group">

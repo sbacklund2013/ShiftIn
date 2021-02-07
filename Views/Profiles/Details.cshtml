@@ -4,32 +4,55 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="row py-5 px-4">
+    <div class="col-md-5 mx-auto">
+        <div class="bg-white shadow rounded overflow-hidden" style="padding-top:4px;">
+            <div class="px-4 pt-0 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3"><img src="@Html.DisplayFor(model=>model.Picture)" alt="..." width="190" class="rounded mb-2 img-thumbnail"></div>
+                    <div class="media-body mb-5 text-black">
+                        <h4 class="mt-0 mb-0"> @Html.DisplayFor(model => model.Username)</h4>
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>@Html.DisplayFor(model => model.Location)</p>
+                    </div>
+                </div>
+            </div>
 
-<div>
-    <h4>Profile</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Picture)
-        </dt>
-        <dd class="col-sm-10">           
-            <img src="@Url.Content(Model.Picture)" alt="Profile picture" width="500" height="600">
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            <div class="px-2 py-2">
+                <h5 class="mb-0">Interests</h5>
+                <div class="p-2 rounded shadow-sm bg-light">
+                    @if (Model.Interests.Count != 0)
+                    {
+                        @foreach (var interest in Model.Interests)
+                        {
+                            <p class="font-weight-bold mb-0"> @interest.Name </p>
+                            <p class="font-italic mb-0"> @interest.Description </p>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="py-2 px-2">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="mb-0">Cars</h5>
+                </div>
+
+                @if (Model.Cars.Count != 0)
+                {
+                    @foreach (var Car in Model.Cars)
+                    {
+                        <p class="font-weight-bold mb-0">@(Car.Year + " " + Car.Make + " " + Car.Model)</p>
+                        <div class="profile mr-3">
+                            @if (Car.CarImages != null)
+                            {
+                                @foreach (var image in Car.CarImages)
+                                {
+                                    <img src="@(image.Path)" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                }
+                            }
+                        </div>
+                    }
+                }
+                
+            </div>
+        </div>
+    </div>
 </div>

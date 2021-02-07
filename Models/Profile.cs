@@ -20,7 +20,7 @@ namespace ShiftIn.Models
         public string Location { get; set; }
         public ICollection<Interest> Interests { get; set; }
         public ICollection<Car> Cars { get; set; }
-
+        public ICollection<Event> Meets { get; set; }
         public ApplicationUser User { get; set; }
 
         [NotMapped]

@@ -16,7 +16,7 @@ namespace ShiftIn.Models
         [Required]
         public string Body { get; set; }
 
-        public ApplicationUser Author { get; set; }
+        public Profile Author { get; set; }
 
         public ForumCategory Category { get; set; }
         

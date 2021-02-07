@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shiftin.Controllers
 {
+    [Authorize]
     public class ForumPostsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,7 @@ namespace Shiftin.Controllers
         // GET: ForumPosts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Posts.ToListAsync());
+            return View(await _context.Posts.Where(fp=>fp.ParentId ==0).ToListAsync());
         }
 
         // GET: ForumPosts/Details/5
@@ -54,8 +56,10 @@ namespace Shiftin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Body,ParentId")] ForumPost forumPost)
+        public async Task<IActionResult> Create([Bind("Id,Title,Body")] ForumPost forumPost)
         {
+            //post is not a reply, will be shown in main thread
+            forumPost.ParentId = 0;
             if (ModelState.IsValid)
             {
                 _context.Add(forumPost);
@@ -80,7 +84,24 @@ namespace Shiftin.Controllers
             }
             return View(forumPost);
         }
+        public async Task<IActionResult> LoadThread(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            //Load replies and their replies
+            var forumPost = await _context.Posts.Where(p=>p.ParentId == id).ToListAsync();
+            if (forumPost == null)
+            {
+                return NotFound();
+            }
+            else
+            {
 
+            }
+            return View(forumPost);
+        }
         // POST: ForumPosts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

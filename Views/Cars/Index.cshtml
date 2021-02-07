@@ -5,22 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Your Cars</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Make)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
+                Year Make Model
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -32,22 +23,27 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Make)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
+                @(item.Year + " " + item.Make + " " + item.Model)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-controller="CarImages" asp-action="AddCarImages" asp-route-id="@item.Id">Add Images</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
+        </tr>
+        <tr>
+            <div class="profile mr-3">
+                @if (item.CarImages != null)
+                {
+                    @foreach (var image in item.CarImages)
+                    {
+                        <img src="@(image.Path)" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                    }
+                }
+            </div>
         </tr>
 }
     </tbody>

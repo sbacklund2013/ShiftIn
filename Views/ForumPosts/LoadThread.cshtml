@@ -1,0 +1,24 @@
+﻿@model IEnumerable<ShiftIn.Models.ForumPost>
+
+@{
+    ViewData["Title"] = "Thread View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Thread View</h1>
+
+
+
+@foreach (var item in Model)
+{
+    <div class="card" style="">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Author.Username)</h6>
+            <p class="card-text">@Html.DisplayFor(modelItem => item.Body)</p>
+            <a asp-action="LoadThread" asp-route-id="@item.Id" class="card-link">View Thread</a>
+        </div>
+    </div>
+}
+
+

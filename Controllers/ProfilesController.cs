@@ -13,9 +13,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shiftin.Controllers
 {
+    [Authorize]
     public class ProfilesController : Controller
     {
         //imageupload for path        
@@ -33,19 +35,19 @@ namespace Shiftin.Controllers
             _environment = environment;
         }
 
-        // GET: Profile
+        //LOGGED IN USERS PROFILE
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
             var profileid = HttpContext.Session.GetInt32("ProfileId");
             if(profileid != null)
             {
-                return View(await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).FirstOrDefaultAsync(pid => pid.Id.Equals(profileid)));
+                return View(await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(pid => pid.Id.Equals(profileid)));
             }
             else
             {
                 //Check if user has profile
-                var profile = await _context.Profiles.Include(pr=>pr.Interests).Include(pr=>pr.Cars).FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                var profile = await _context.Profiles.Include(pr=>pr.Interests).Include(pr=>pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
                 if (profile == null)
                 {
                     return RedirectToAction(nameof(Create));
@@ -62,6 +64,7 @@ namespace Shiftin.Controllers
             
         }
 
+        //ANYONES PROFILE
         // GET: Profiles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -70,7 +73,7 @@ namespace Shiftin.Controllers
                 return NotFound();
             }
 
-            var profile = await _context.Profiles
+            var profile = await _context.Profiles.Include(p=>p.Interests).Include(p=>p.Cars).ThenInclude(c=>c.CarImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (profile == null)
             {
@@ -135,14 +138,11 @@ namespace Shiftin.Controllers
         }
 
         // GET: Profiles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var profile = await _context.Profiles.FindAsync(id);
+            
+            var loggeduser = await _userManager.GetUserAsync(User);
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p=>p.User.Id ==loggeduser.Id);
             if (profile == null)
             {
                 return NotFound();
@@ -155,15 +155,34 @@ namespace Shiftin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Username,Picture,Location")] Profile profile)
+        public async Task<IActionResult> Edit([Bind("Id,Username,Location,Upload")] Profile profile)
         {
-            if (id != profile.Id)
+            if (HttpContext.Session.GetInt32("ProfileId") != profile.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                if (profile.Upload != null)
+                {
+                    try
+                    {
+                        /////////////////////GET UPLOADED FILE////////////////////////////
+                        var file = Path.Combine(_environment.ContentRootPath, "wwwroot/ProfileImages", profile.Upload.FileName);
+                        using (var fileStream = new FileStream(file, FileMode.Create))
+                        {
+                            await profile.Upload.CopyToAsync(fileStream);
+                        }
+                        //SET DIRECTORY
+                        profile.Picture = "/ProfileImages/" + profile.Upload.FileName;
+                        /////////////////////////////////////////////////////////////////////////////////////
+                    }
+                    catch (Exception e)
+                    {
+                        //error page
+                    }
+                }
                 try
                 {
                     _context.Update(profile);
