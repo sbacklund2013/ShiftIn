@@ -84,6 +84,21 @@ namespace Shiftin.Controllers
             }
             return View(forumPost);
         }
+        // GET: ForumPosts/Reply/5
+        public async Task<IActionResult> Reply(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var forumPost = await _context.Posts.FirstOrDefaultAsync(p=>p.Id == id);
+            if (forumPost == null)
+            {
+                return NotFound();
+            }
+            return View(forumPost);
+        }
         public async Task<IActionResult> LoadThread(int? id)
         {
             if (id == null)
