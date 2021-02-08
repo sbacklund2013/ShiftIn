@@ -38,10 +38,13 @@ namespace Shiftin.Controllers
         //LOGGED IN USERS PROFILE
         public async Task<IActionResult> Index()
         {
+            //Get logged in User
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            //Check if profileid is in the session
             var profileid = HttpContext.Session.GetInt32("ProfileId");
             if(profileid != null)
             {
+                //Profile exists
                 return View(await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(pid => pid.Id.Equals(profileid)));
             }
             else
@@ -72,7 +75,7 @@ namespace Shiftin.Controllers
             {
                 return NotFound();
             }
-
+            //includes interests and cars
             var profile = await _context.Profiles.Include(p=>p.Interests).Include(p=>p.Cars).ThenInclude(c=>c.CarImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (profile == null)

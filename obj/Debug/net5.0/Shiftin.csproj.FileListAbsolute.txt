@@ -511,3 +511,4 @@ C:\Users\sback\source\repos\Shiftin\Shiftin\obj\Debug\net5.0\ref\Shiftin.dll
 C:\Users\sback\source\repos\Shiftin\Shiftin\obj\Debug\net5.0\Shiftin.pdb
 C:\Users\sback\source\repos\Shiftin\Shiftin\obj\Debug\net5.0\Shiftin.genruntimeconfig.cache
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\ForumPosts\LoadThread.cshtml.g.cs
+C:\Users\sback\source\repos\Shiftin\Shiftin\obj\Debug\net5.0\Razor\Views\ForumPosts\Reply.cshtml.g.cs

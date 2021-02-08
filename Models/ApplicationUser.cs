@@ -8,6 +8,10 @@ using System.ComponentModel;
 
 namespace Shiftin.Models
 {
+    //Used to add any additional user fields
+    /// <summary>
+    /// Added for control and direct implementation of AspNetCore.IdentityUser
+    /// </summary>
     public class ApplicationUser:IdentityUser
     {
         

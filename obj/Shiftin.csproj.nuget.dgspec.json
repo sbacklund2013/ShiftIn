@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sback\\source\\repos\\ShiftIn\\Shiftin\\Shiftin.csproj": {}
+    "C:\\Users\\sback\\source\\repos\\Shiftin\\Shiftin\\Shiftin.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sback\\source\\repos\\ShiftIn\\Shiftin\\Shiftin.csproj": {
+    "C:\\Users\\sback\\source\\repos\\Shiftin\\Shiftin\\Shiftin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sback\\source\\repos\\ShiftIn\\Shiftin\\Shiftin.csproj",
+        "projectUniqueName": "C:\\Users\\sback\\source\\repos\\Shiftin\\Shiftin\\Shiftin.csproj",
         "projectName": "Shiftin",
-        "projectPath": "C:\\Users\\sback\\source\\repos\\ShiftIn\\Shiftin\\Shiftin.csproj",
+        "projectPath": "C:\\Users\\sback\\source\\repos\\Shiftin\\Shiftin\\Shiftin.csproj",
         "packagesPath": "C:\\Users\\sback\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sback\\source\\repos\\ShiftIn\\Shiftin\\obj\\",
+        "outputPath": "C:\\Users\\sback\\source\\repos\\Shiftin\\Shiftin\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

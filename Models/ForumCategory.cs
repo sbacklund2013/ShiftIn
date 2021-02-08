@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ShiftIn.Models
 {
+    /// <summary>
+    /// To which category does a post belong ex:Car help, Tips and Tricks
+    /// </summary>
     public class ForumCategory
     {
         [Key]

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ShiftIn.Models
 {
+    /// <summary>
+    /// Represents a car that a user owns. Contains all information to identity the car
+    /// Has collection of carimages to house pictures of the vehicle
+    /// </summary>
     public class Car
     {
         [Key]
@@ -17,7 +21,9 @@ namespace ShiftIn.Models
         [Required]
         public string Model { get; set; }
         public string Description { get; set; }
-
+        /// <summary>
+        /// Used to allow a car to have many images. One to many
+        /// </summary>
         public ICollection<CarImage> CarImages { get; set; }
 
     }

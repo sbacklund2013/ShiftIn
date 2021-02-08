@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ShiftIn.Models
 {
+    /// <summary>
+    /// Represents a posts a user has made on the forum
+    /// </summary>
     public class ForumPost
     {
         [Key]
@@ -15,9 +18,9 @@ namespace ShiftIn.Models
         public string Title { get; set; }
         [Required]
         public string Body { get; set; }
-
+        //Which profile created the post
         public Profile Author { get; set; }
-
+        //To which category does this post belong
         public ForumCategory Category { get; set; }
         
         //For Replies

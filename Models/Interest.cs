@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ShiftIn.Models
 {
+    /// <summary>
+    /// Represents the interest of a user such as Diesel or JDM or Subaru
+    /// </summary>
     public class Interest
     {
         [Key]

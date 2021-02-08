@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace ShiftIn.Models
 {
-    
+    /// <summary>
+    /// Class is used to link a profile to a forumpost to represent an "upvote"
+    /// </summary>
     public class Like
     {
         [Key]
