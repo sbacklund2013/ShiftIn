@@ -89,6 +89,7 @@ namespace Shiftin.Controllers
         // GET: Profiles/Create
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -119,7 +120,7 @@ namespace Shiftin.Controllers
                     }
                     catch (Exception e)
                     {
-                        //error page
+                        return RedirectToPage("Error");
                     }
                 }
 
@@ -129,7 +130,7 @@ namespace Shiftin.Controllers
                 if (result> 0)
                 {
                     HttpContext.Session.SetInt32("ProfileId", profile.Id );
-                    return RedirectToAction("Index","Interests");
+                    return RedirectToAction("Index","Profiles");
                 }
                 else
                 {
@@ -167,25 +168,6 @@ namespace Shiftin.Controllers
 
             if (ModelState.IsValid)
             {
-                if (profile.Upload != null)
-                {
-                    try
-                    {
-                        /////////////////////GET UPLOADED FILE////////////////////////////
-                        var file = Path.Combine(_environment.ContentRootPath, "wwwroot/ProfileImages", profile.Upload.FileName);
-                        using (var fileStream = new FileStream(file, FileMode.Create))
-                        {
-                            await profile.Upload.CopyToAsync(fileStream);
-                        }
-                        //SET DIRECTORY
-                        profile.Picture = "/ProfileImages/" + profile.Upload.FileName;
-                        /////////////////////////////////////////////////////////////////////////////////////
-                    }
-                    catch (Exception e)
-                    {
-                        //error page
-                    }
-                }
                 try
                 {
                     _context.Update(profile);

@@ -4,28 +4,28 @@
     ViewData["Title"] = "Reply";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h4>Reply</h4>
-<hr />
-<h2> @Html.DisplayFor(model => model.Title)
+<h2> @ViewBag.post.Title
 </h2>
-<h5>
-    @Html.DisplayFor(model => model.Body)
-</h5>
+<p>
+    @ViewBag.post.Body
+</p>
+<hr />
 <div class="row">
     <div class="col-md-4">
+        <h5>Reply</h5>
         <form asp-action="Reply">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ParentId" value="@ViewBag.post.Id" type="hidden" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input placeholder="Your reply title" asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Body" class="control-label"></label>
-                <textarea asp-for="Body" class="form-control"></textarea>
+                <textarea placeholder="What do you want to say to them" asp-for="Body" class="form-control"></textarea>
                 <span asp-validation-for="Body" class="text-danger"></span>
-            </div>            
+            </div>
             <div class="form-group">
                 <input type="submit" value="Reply" class="btn btn-primary" />
             </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,10 +22,24 @@ namespace ShiftIn.Models
         [Required]
         public string Model { get; set; }
         public string Description { get; set; }
+
+        public Profile Profile { get; set; }
+        public int ProfileId { get; set; }
         /// <summary>
         /// Used to allow a car to have many images. One to many
         /// </summary>
         public ICollection<CarImage> CarImages { get; set; }
+
+        //This should be in ViewModel
+        [NotMapped]
+        public int NumberOfCarImages
+        {
+            get => CarImages.Count;
+        }
+        public Car()
+        {
+            CarImages = new List<CarImage>();
+        }
 
     }
 }

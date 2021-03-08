@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 .banner-image {
     /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
-    background-image: url("../Images/car companies.png");
+    background-image: url("../Images/car companies.jpg");
     height:600px;
     /* Position and center the image to scale nicely on all screens */
     background-position: center;

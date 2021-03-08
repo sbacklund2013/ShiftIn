@@ -1,0 +1,43 @@
+﻿@model ShiftIn.Models.CarImage
+<div class="row">
+    <div class="col-md-auto">
+        @if (Model.Path != null)
+        {
+        <div id="@(Model.Id)">
+            <div class="col-md-10">
+                <img src="@(Model.Path)" alt="..." class="rounded mb-2 img-thumbnail">
+            </div>
+           
+            <input type="hidden" asp-for="Path" />
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="row">
+                    <button type="button" class="btn-danger col-5" onclick="removeImage(@(Model.Id))">Delete</button>
+                    <input placeholder="Change" type="file" asp-for="Upload" class="form-control btn btn-dark col 7" />
+                </div>                
+            </div>
+            <div class="form-group">
+                <label asp-for="Alt" class="control-label">Change alt text</label>
+                <input placeholder="Ugh, free websites" asp-for="Alt" class="form-control" />
+                <span asp-validation-for="Alt" class="text-danger"></span>
+            </div>
+        </div>
+            
+        }
+        else
+        {
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label class="control-label">Upload a Picture of your car</label>
+            <input type="file" asp-for="Upload" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Alt" class="control-label">What should display if the image doesn't load?</label>
+            <input placeholder="Ugh, free websites" asp-for="Alt" class="form-control" />
+            <span asp-validation-for="Alt" class="text-danger"></span>
+        </div>
+        }
+    </div>
+</div>

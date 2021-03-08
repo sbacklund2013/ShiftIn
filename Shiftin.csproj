@@ -27,7 +27,9 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Views\CarImages\" />
     <Folder Include="wwwroot\CarImages\" />
+    <Folder Include="wwwroot\CarImages\3\" />
     <Folder Include="wwwroot\ProfileImages\" />
   </ItemGroup>
 

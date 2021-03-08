@@ -56,6 +56,35 @@ namespace Shiftin.Controllers
 
             return View(await _context.Events.ToListAsync());
         }
+        public async Task<IActionResult> YourEvents()
+        {
+            //Get logged in User
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            //Check if profileid is in the session
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid != null)
+            {
+                //Profile exists
+                return View(await _context.Events.Include(pr => pr.Attendees).Include(pr => pr.Creator).Where(pid => pid.Creator.Id.Equals(userId)).ToListAsync());
+            }
+            else
+            {
+                //Check if user has profile
+                var profile = await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                if (profile == null)
+                {
+                    return RedirectToAction("Create","Profiles");
+                }
+                else
+                {
+                    //Return profile view
+                    Profile userprofile = (Profile)profile;
+                    HttpContext.Session.SetInt32("ProfileId", userprofile.Id);
+                    return View(await _context.Events.Include(pr => pr.Attendees).Include(pr => pr.Creator).Where(pid => pid.Creator.Id.Equals(userId)).ToListAsync());
+                }
+            }
+
+        }
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)

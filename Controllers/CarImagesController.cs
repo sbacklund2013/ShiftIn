@@ -7,22 +7,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Shiftin.Controllers
 {
     public class CarImagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CarImagesController(ApplicationDbContext context)
+        //imageupload for path        
+        private readonly IWebHostEnvironment _environment;
+        ///
+        public CarImagesController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            //for io
+            _environment = environment;
         }
 
         // GET: CarImages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            return View(await _context.CarImage.ToListAsync());
+            if (id == null)
+            {
+                return NotFound();
+            }
+            //includes interests and cars
+            var Car = await _context.Car.Include(c => c.CarImages).FirstOrDefaultAsync(c => c.Id == id);
+            if (Car == null)
+            {
+                return NotFound();
+            }
+            return View(Car);
         }
 
         // GET: CarImages/Details/5
@@ -43,8 +60,13 @@ namespace Shiftin.Controllers
         }
 
         // GET: CarImages/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
+            var profile = await _context.Car.Include(p=>p.CarImages).FirstOrDefaultAsync(p => p.Id == id);
+            if (profile == null)
+            {
+                return NotFound();
+            }
             return View();
         }
 
@@ -53,13 +75,36 @@ namespace Shiftin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Path,Alt")] CarImage carImage)
+        public async Task<IActionResult> Create([Bind("Id,Path,Alt,Upload")] CarImage carImage)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(carImage);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (carImage.Upload != null)
+                {
+                    try
+                    {
+                        /////////////////////GET UPLOADED FILE////////////////////////////
+                        string storagepathforuser = "wwwroot/CarImages/" + HttpContext.Session.GetInt32("ProfileId").ToString();
+                        var file = Path.Combine(_environment.ContentRootPath, "wwwroot/CarImages/", carImage.Upload.FileName);
+                        using (var fileStream = new FileStream(file, FileMode.Create))
+                        {
+                            await carImage.Upload.CopyToAsync(fileStream);
+                        }
+                        //SET DIRECTORY
+                        carImage.Path = "/ProfileImages/" + carImage.Upload.FileName;
+
+                        _context.Add(carImage);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception e)
+                    {
+                        
+                        return RedirectToPage("Error");
+                    }
+                }
+                return NotFound();                    
             }
             return View(carImage);
         }

@@ -5,9 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Thread View</h1>
-
-
+<h2>
+    @ViewBag.post.Title
+</h2>
+<p>
+    @ViewBag.post.Body
+</p>
+<hr />
 
 @foreach (var item in Model)
 {
@@ -17,6 +21,7 @@
             <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Author.Username)</h6>
             <p class="card-text">@Html.DisplayFor(modelItem => item.Body)</p>
             <a asp-action="LoadThread" asp-route-id="@item.Id" class="card-link">View Thread</a>
+            <a asp-action="Reply" asp-route-id="@item.Id" class="card-link">Reply</a>
         </div>
     </div>
 }

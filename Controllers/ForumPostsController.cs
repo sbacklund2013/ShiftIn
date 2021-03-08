@@ -26,6 +26,11 @@ namespace Shiftin.Controllers
         {
             return View(await _context.Posts.Where(fp=>fp.ParentId ==0).ToListAsync());
         }
+        [HttpPost]
+        public async Task<IActionResult> Search(string searchtext)
+        {
+            return View(await _context.Posts.Where(x => EF.Functions.Like(x.Title, $"%{searchtext}%")).ToListAsync());
+        }
 
         // GET: ForumPosts/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -97,6 +102,43 @@ namespace Shiftin.Controllers
             {
                 return NotFound();
             }
+            else
+            {
+                ViewBag.post = forumPost;
+                return View();
+            }
+            
+           
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reply(int id, [Bind("Title,Body,ParentId")] ForumPost forumPost)
+        {
+            if (id != forumPost.ParentId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Add(forumPost);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ForumPostExists(forumPost.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
             return View(forumPost);
         }
         public async Task<IActionResult> LoadThread(int? id)
@@ -105,6 +147,12 @@ namespace Shiftin.Controllers
             {
                 return NotFound();
             }
+            var forumPostog = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (forumPostog == null)
+            {
+                return NotFound();
+            }
+             ViewBag.post = forumPostog;
             //Load replies and their replies
             var forumPost = await _context.Posts.Where(p=>p.ParentId == id).ToListAsync();
             if (forumPost == null)

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<ShiftIn.Models.Event>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    <a class="btn btn-dark" asp-action="Create">Create New</a>
+    <a class="btn btn-dark" asp-action="YourEvents">Your Events</a>
+</p>
+@foreach (var item in Model)
+{
+    <div class="card" style="">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Location)</h6>
+            <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+            <a asp-action="Details" asp-route-id="@item.Id" class="card-link">View</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="card-link">Delete</a>
+            <a asp-action="Edit" asp-route-id="@item.Id" class="card-link">Edit</a>
+        </div>
+    </div>
+}

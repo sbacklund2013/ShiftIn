@@ -187,7 +187,7 @@ namespace Shiftin.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileId")
+                    b.Property<int>("ProfileId")
                         .HasColumnType("int");
 
                     b.Property<string>("Year")
@@ -216,7 +216,6 @@ namespace Shiftin.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -513,9 +512,13 @@ namespace Shiftin.Migrations
 
             modelBuilder.Entity("ShiftIn.Models.Car", b =>
                 {
-                    b.HasOne("ShiftIn.Models.Profile", null)
+                    b.HasOne("ShiftIn.Models.Profile", "Profile")
                         .WithMany("Cars")
-                        .HasForeignKey("ProfileId");
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("ShiftIn.Models.CarImage", b =>

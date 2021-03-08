@@ -5,37 +5,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Car</h4>
+<h4>Your Car</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-6">
+        <form id="form" enctype="multipart/form-data" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
+            <div class="row">
+                <div class="form-group col-sm">
+                    <label type="date" asp-for="Year" class="control-label"></label>
+                    <input placeholder="1994" asp-for="Year" class="form-control" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm">
+                    <label asp-for="Make" class="control-label"></label>
+                    <input placeholder="Toyota" asp-for="Make" class="form-control" />
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm">
+                    <label asp-for="Model" class="control-label"></label>
+                    <input placeholder="Celica" asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Make" class="control-label"></label>
-                <input asp-for="Make" class="form-control" />
-                <span asp-validation-for="Make" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea placeholder="What have you done to it?" asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <!--For images-->
+            <div id="imagesContainer">
+                @Html.EditorFor(model => model.CarImages)
             </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <input class="btn btn-dark" type="button" id="btnAdd" value="Add Image" />
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>            
         </form>
     </div>
 </div>
@@ -46,4 +57,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $("#btnAdd").on('click', function () {
+            $.ajax({
+                async: true,
+                data: $('#form').serialize(),
+                type: "POST",
+                url: '/Cars/AddCarImage',
+                success: function (partialView) {
+                    console.log("partialView: "+partialView);
+                    $('#imagesContainer').html(partialView);
+                }
+            });
+        });
+    </script>
 }
