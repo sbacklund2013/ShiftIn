@@ -507,7 +507,6 @@ C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\ref\Shiftin.dll
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Shiftin.pdb
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Shiftin.genruntimeconfig.cache
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\EditorTemplates\CarImage.cshtml.g.cs
-C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Shiftin.csprojAssemblyReference.cache
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Error.cshtml.g.cs
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\ForumPosts\Search.cshtml.g.cs
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Events\YourEvents.cshtml.g.cs

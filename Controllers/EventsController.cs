@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Net;
+using Shiftin.Models;
 
 namespace Shiftin.Controllers
 {
@@ -163,6 +164,11 @@ namespace Shiftin.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Get logged in User
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId)
+
+                var creator= await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(userId));
+                @event.Creator = (ApplicationUser)creator;
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
