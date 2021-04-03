@@ -60,6 +60,7 @@ Bootstrap | Widely used, Creates responsive pages, is small in size.
 ##
 ### Development Approach
 #### *Feature Driven*
+
 The feature-driven approach was taken to ensure consistent updates and easy management for a small team. Feature-driven development allows us to keep a user-centric approach when building Shiftin. The process begins with our user stories. User stories are requests from users or ideas from developers for improvements to the website. From user stories, a new feature is added to the feature list. The feature is then claimed by a developer for the creation and a branch is created. From there, the feature enters the CI/CD workflow. 
 
 __Current Feature List__
@@ -72,6 +73,7 @@ __Current Feature List__
 - [x] Forum post creation and deletion
 
 *Feature List*
+
 - [x] Forum post replies
 	- [ ] Forum reply edit 	
 - [x] Forum search box
@@ -106,6 +108,7 @@ Building the application for scale was by far the biggest challenge. The app mus
  Creating a reliable app is another challenge and an open-source project can sometimes get carried away. I decided to utilize tried and true methods, dependencies, and frameworks where I could. I utilized .Net Core 5 because it is the most up-to-date and is actively being maintained. I also utilized the Identity Framework library for my authentication system because it is far faster, more secure, and reliable than anything I would spend weeks creating. Overall, reliability is addressed through proper best practice dependency management as well as utilizing tried and true open source options. 
  
 *Learning Curve* 
+
 A lot of this technology was new to me. I had not utilized Entity Framework before working on this application. It was a risk to learn so many new things and try to create a usable product at the same time. In the end, I utilized lots and lots of documentation as well as sample projects and examples. 
 
 ##
