@@ -30,17 +30,24 @@ Open source | Shiftin must remain open source to encourage community involvement
 ##
 ### Design
 Project is designed around object-oriented principles, model-view-controller design pattern, and N-Layer architecture. Object-oriented approach is taken to ensure code reusability and updatability. MVC pattern was used for ease of security, code updatability, organization, and reusability. The N-layer architecture was utilized to ensure independent functioning components that can be updated or switched without having to edit every file. N-Layer also helps with code organization preventing "spaghetti code". These design aspects support business requirements for low cost development, bug fixes, and deployment.
+
 ###### Current Project UML
 <img src="https://github.com/sbacklund2013/ShiftInDocs/blob/main/uml.jpg?raw=true" alt="" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="500" height="auto" />
+
 ###### Site Map
 ![Current Site Map](https://github.com/sbacklund2013/ShiftInDocs/blob/main/sitemap.png?raw=true)
+
 ###### Site Flow Chart
 ![Current Flow Chart](https://github.com/sbacklund2013/ShiftInDocs/blob/main/siteflow.png?raw=true)
+
 ###### Componenet Model
 ![Current Components Model](https://github.com/sbacklund2013/ShiftInDocs/blob/main/componentmodel.png?raw=true)
+
 ###### Database Entity Model
 ![Current ER Diagram](https://github.com/sbacklund2013/ShiftInDocs/blob/main/ER%20Diagram.PNG?raw=true)
+
 ##### Technologies
+
 Technologies | Justification
 ------------ | -------------
 .Net 5 | Open Source, Cross platform runtimes, and rapid development. The most current Microsoft framework.
