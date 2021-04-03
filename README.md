@@ -29,7 +29,7 @@ Upgradability | The application must be able to support regular updates without 
 Open source | Shiftin must remain open source to encourage community involvement and lower maintenance costs. 
 ##
 ### Design
-Project is designed around object-oriented principles, model-view-controller design pattern, and N-Layer architecture. Object-oriented approach is taken to ensure code reusability and updatability. MVC pattern was used for ease of security, code updatability, organization, and reusability. The N-layer architecture was utilized to ensure independent functioning components that can be updated or switched without having to edit every file. N-Layer also helps with code organization preventing "spaghetti code". These design aspects support business requirements for low cost development, bug fixes, and deployment.
+The project is designed around object-oriented principles, model-view-controller design pattern, and N-Layer architecture. Object-oriented approach is taken to ensure code reusability and updateability. MVC pattern was used for ease of security, code updatability, organization, and reusability. The N-layer architecture was utilized to ensure independent functioning components that can be updated or switched without having to edit every file. N-Layer also helps with code organization preventing "spaghetti code". These design aspects support business requirements for low-cost development, bug fixes, and deployment.
 
 ###### Current Project UML
 <img src="https://github.com/sbacklund2013/ShiftInDocs/blob/main/uml.jpg?raw=true" alt="" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="500" height="auto" />
@@ -50,17 +50,17 @@ Project is designed around object-oriented principles, model-view-controller des
 
 Technologies | Justification
 ------------ | -------------
-.Net 5 | Open Source, Cross platform runtimes, and rapid development. The most current Microsoft framework.
+.Net 5 | Open Source, Cross-platform runtimes, and rapid development. The most current Microsoft framework.
 C# | Widely used and supported language.
-Identity Framework | Out of the box encryption, two factor support, and protected session management.
-Entity Framework | Rapid development time, Asyncronous datbase calls, speed.  
+Identity Framework | Out-of-the-box encryption, two-factor support, and protected session management.
+Entity Framework | Rapid development time, Asynchronous database calls, speed.  
 Bootstrap | Widely used, Creates responsive pages, is small in size.
 ###### Architecture Diagram
 ![Current Architecture Diagram](https://github.com/sbacklund2013/ShiftInDocs/blob/main/architecturediagram.png?raw=true)
 ##
 ### Development Approach
 #### *Feature Driven*
-The feature driven approach was taken to ensure consistent updates and easy management for a small team. Feature driven development allows us to keep a user-centric approach when building Shiftin. The process begins at our user stories. User stories are requests from users or ideas from developers for improvements to the website. From user stories a new feature is add to the feature list. The feature is than claimed by a developer for creation and a branch is created. From their the feature enters the CI/CD workflow. 
+The feature-driven approach was taken to ensure consistent updates and easy management for a small team. Feature-driven development allows us to keep a user-centric approach when building Shiftin. The process begins with our user stories. User stories are requests from users or ideas from developers for improvements to the website. From user stories, a new feature is added to the feature list. The feature is then claimed by a developer for the creation and a branch is created. From there, the feature enters the CI/CD workflow. 
 
 __Current Feature List__
 
@@ -98,19 +98,19 @@ What risks and challenges did you have? How did you overcome these and what reso
 
 *Scale*
 
-Building the application for scale was by far the biggest challenge. The app must be built to be upgradable, reliable, and fast at the same time. This meant sticking to the architecture plan, single responsibility, and other best practices. I also used asychronus calls where ever possible, this helps lower page rendering times.
+Building the application for scale was by far the biggest challenge. The app must be built to be upgradable, reliable, and fast at the same time. This meant sticking to the architecture plan, single responsibility, and other best practices. I also used asynchronous calls where ever possible, this helps lower page rendering times.
 
 
 *Reliability*
 
- Creating a reliable app is another challenge and an open source project can sometimes get carried away. I decided to utilize tried and truth methods, dependencies, and frameworks where I could. I utlized .Net Core 5 because it is the most up to date and is actively being maintained. I also utlized the Identity Framework library for my authentication system because it is far faster, more secure, and reliable than anything I would spend weeks creating. Overall, realiability is addressed through proper best practice dependency management as well as utlizing tried and true open source options. 
+ Creating a reliable app is another challenge and an open-source project can sometimes get carried away. I decided to utilize tried and true methods, dependencies, and frameworks where I could. I utilized .Net Core 5 because it is the most up-to-date and is actively being maintained. I also utilized the Identity Framework library for my authentication system because it is far faster, more secure, and reliable than anything I would spend weeks creating. Overall, reliability is addressed through proper best practice dependency management as well as utilizing tried and true open source options. 
  
 *Learning Curve* 
-A lot of this technology was new to me. I had not utilized Entity Framework before working on this application. It was a risk to learn so many new things and try to create a usable product at the same time. In the end I utilized lots and lots of documentation as well as sample projects and examples. 
+A lot of this technology was new to me. I had not utilized Entity Framework before working on this application. It was a risk to learn so many new things and try to create a usable product at the same time. In the end, I utilized lots and lots of documentation as well as sample projects and examples. 
 
 ##
 ### Current Issues
 	
 *Image Processing and Storage*
 
-The current system in place for storing user images is not scalable. With hosting being done in the cloud it would increase the bill exponentially by storing images on the server. A proposed solution is Azure Storage which allows us to create blobs for profile image data. 
+The current system in place for storing user images is not scalable. With hosting being done in the cloud it would increase the bill exponentially by storing images on the server. A proposed solution is Azure Storage which allows us to create blobs for profile image data.
