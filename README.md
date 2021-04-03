@@ -96,8 +96,6 @@ __Current Feature List__
 ##
 ### Risks and Challenges
 
-What risks and challenges did you have? How did you overcome these and what resources did you use? What risk management approaches did you take?
-
 *Scale*
 
 Building the application for scale was by far the biggest challenge. The app must be built to be upgradable, reliable, and fast at the same time. This meant sticking to the architecture plan, single responsibility, and other best practices. I also used asynchronous calls where ever possible, this helps lower page rendering times.
