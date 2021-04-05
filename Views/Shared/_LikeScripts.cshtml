@@ -1,0 +1,17 @@
+﻿<script type="text/javascript">
+   
+    function LoadLikes(pid) {
+        $.ajax({
+            async: true,
+            data: {
+                id: pid
+            },
+            type: "POST",
+            dataType: "text",
+            url: "@Url.Action("CountLikes")",
+            success: function (count) {
+                $('#' + pid).innerHTML = count;
+            },
+        });
+    };
+</script>

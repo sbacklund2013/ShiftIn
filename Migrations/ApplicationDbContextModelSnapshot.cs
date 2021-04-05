@@ -280,7 +280,7 @@ namespace Shiftin.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("AuthorId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Body")
@@ -541,7 +541,9 @@ namespace Shiftin.Migrations
                 {
                     b.HasOne("ShiftIn.Models.Profile", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ShiftIn.Models.ForumCategory", "Category")
                         .WithMany()

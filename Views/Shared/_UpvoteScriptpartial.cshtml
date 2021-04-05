@@ -1,0 +1,25 @@
+﻿<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+        function upvote(pid) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Upvote")",
+                data: { id: pid },
+                dataType: "text",
+                success: function (msg) {
+                    if (msg == "OKAY") {
+                        console.log("upvoted id: ".concat(pid));
+                    } else {
+                        alert(msg);
+                        console.log("could not upvote id: ".concat(pid));
+                    }
+
+                },
+                error: function (req, status, error, msg) {
+                    console.log(error);
+                    alert(msg);
+                    console.log("Couldnt upvote id: ".concat(pid));
+                }
+            });
+        };
+</script>

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ShiftIn.Models;
 using Shiftin.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Serialization;
 
 namespace Shiftin.Controllers
 {
@@ -24,12 +26,17 @@ namespace Shiftin.Controllers
         // GET: ForumPosts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Posts.Where(fp=>fp.ParentId ==0).ToListAsync());
+            var forumPost = await _context.Posts.Include("Author").Where(fp => fp.ParentId == 0).ToListAsync();
+            foreach(ForumPost post in forumPost)
+            {
+                post.Likes = CountLikes(post.Id);
+            }
+            return View(forumPost);
         }
         [HttpPost]
         public async Task<IActionResult> Search(string searchtext)
         {
-            return View(await _context.Posts.Where(x => EF.Functions.Like(x.Title, $"%{searchtext}%")).ToListAsync());
+            return View(await _context.Posts.Include(fp => fp.Author).Where(x => EF.Functions.Like(x.Title, $"%{searchtext}%")).ToListAsync());
         }
 
         // GET: ForumPosts/Details/5
@@ -40,7 +47,7 @@ namespace Shiftin.Controllers
                 return NotFound();
             }
 
-            var forumPost = await _context.Posts
+            var forumPost = await _context.Posts.Include(fp => fp.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (forumPost == null)
             {
@@ -63,7 +70,13 @@ namespace Shiftin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Body")] ForumPost forumPost)
         {
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid == null)
+            {
+                return View("ProfileError");
+            }
             //post is not a reply, will be shown in main thread
+            forumPost.AuthorId = profileid.GetValueOrDefault();
             forumPost.ParentId = 0;
             if (ModelState.IsValid)
             {
@@ -89,79 +102,146 @@ namespace Shiftin.Controllers
             }
             return View(forumPost);
         }
-        // GET: ForumPosts/Reply/5
-        public async Task<IActionResult> Reply(int? id)
+        [HttpPost]
+        public IActionResult SubmitReply(ForumPost ForumPost)
+        {
+            int parentid = ForumPost.ParentId;
+            if (ForumPost == null)
+            {
+                return null;
+            }
+            else
+            {
+                var profileid = HttpContext.Session.GetInt32("ProfileId");
+                if (profileid == null)
+                {
+                    return View("ProfileError");
+                }
+                else
+                {
+                    ForumPost.AuthorId = (int) profileid;
+                    _context.Posts.Add(ForumPost);
+                    _context.SaveChanges();
+                }                
+                return RedirectToAction("LoadThread", new { id = parentid });
+
+            }
+
+        }
+        
+        public int CountLikes(int id)
+        {            
+            //load original post
+            var likes = _context.Likes.Where(fp => fp.PostId == id).ToList();
+            if (likes.Count() == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return likes.Count();
+            }
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadReplies(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var forumPost = await _context.Posts.FirstOrDefaultAsync(p=>p.Id == id);
-            if (forumPost == null)
+            //load original post
+            var forumPostog = await _context.Posts.Include(fp => fp.Author).FirstOrDefaultAsync(p => p.Id == id);
+            if (forumPostog == null)
             {
                 return NotFound();
+            }
+            //Load replies and their replies
+            var forumPost = await _context.Posts.Include(fp => fp.Author).Where(p => p.ParentId == id).ToListAsync();
+            if (forumPost == null)
+            {
+                return PartialView("_Replies",null);
             }
             else
             {
-                ViewBag.post = forumPost;
-                return View();
+                //found some replies to load
+                foreach(ForumPost post in forumPost)
+                {
+                    post.Likes = CountLikes(post.Id);
+                }
+                return PartialView("_Replies", forumPost);
             }
-            
-           
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reply(int id, [Bind("Title,Body,ParentId")] ForumPost forumPost)
+        public IActionResult Reply(int id)
         {
-            if (id != forumPost.ParentId)
+            ForumPost fp = _context.Posts.FirstOrDefault(f => f.Id == id);
+            if(fp == null)
             {
-                return NotFound();
+                return null;
             }
-
-            if (ModelState.IsValid)
+            else
             {
-                try
-                {
-                    _context.Add(forumPost);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ForumPostExists(forumPost.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                
+                fp.Likes = CountLikes(fp.Id);
+                return PartialView("_Reply", fp);
             }
-            return View(forumPost);
+            
         }
+        //Like
+        [HttpPost]
+        public string Upvote(int id)
+        {
+            //check profile logged in
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid == null)
+            {
+                return "Could not find your profile, did your session expire? revisit the your profile to refresh";
+            }
+            //check if already liked
+            List<Like> existing = (List<Like>)_context.Likes.Where(p => p.PostId == id && p.ProfileId == (int) profileid).ToList();
+            if (existing.Count >= 1)
+            {
+                return "You already liked this";
+            }
+            //gopher it
+            else
+            {
+                Like newlike = new Like();
+                newlike.PostId = id;
+                newlike.ProfileId = profileid.GetValueOrDefault();
+                _context.Add(newlike);
+                _context.SaveChangesAsync();
+                return "OKAY";
+            }
+        }
+
+   
         public async Task<IActionResult> LoadThread(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var forumPostog = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            var forumPostog = await _context.Posts.Include(fp => fp.Author).FirstOrDefaultAsync(p => p.Id == id);
             if (forumPostog == null)
             {
                 return NotFound();
             }
              ViewBag.post = forumPostog;
             //Load replies and their replies
-            var forumPost = await _context.Posts.Where(p=>p.ParentId == id).ToListAsync();
+            var forumPost = await _context.Posts.Include(fp => fp.Author).Where(p=>p.ParentId == id).ToListAsync();
             if (forumPost == null)
             {
                 return NotFound();
             }
             else
             {
-
+                foreach (ForumPost post in forumPost)
+                {
+                    post.Likes = CountLikes(post.Id);
+                }
             }
             return View(forumPost);
         }

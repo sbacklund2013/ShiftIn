@@ -4,10 +4,10 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h4>Edit your @(Model.Year + " "+ Model.Make + " " + Model.Model)</h4>
+<h4 class="text-center">Your @(Model.Year + " "+ Model.Make + " " + Model.Model)</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6 mx-auto">
         <form id="form" enctype="multipart/form-data" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />

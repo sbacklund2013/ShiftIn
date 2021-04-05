@@ -510,3 +510,13 @@ C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Cars\Error.cshtml.g.cs
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\ForumPosts\Search.cshtml.g.cs
 C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Events\YourEvents.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Shiftin.csprojAssemblyReference.cache
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_ForumPost.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_Event.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_ProfilePublic.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_UpvoteScriptpartial.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_Reply.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_ReplyScriptsPartial.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_LoadReplyScriptsPartial.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_Replies.cshtml.g.cs
+C:\Users\sback\source\repos\ShiftIn\Shiftin\obj\Debug\net5.0\Razor\Views\Shared\_LikeScripts.cshtml.g.cs

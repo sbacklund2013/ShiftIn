@@ -3,9 +3,9 @@
 @{
     ViewData["Title"] = "Your Profile";
 }
-<div class="row py-5 px-4">
-    <div class="col-md-5 mx-auto">
-        <div class="bg-white shadow rounded overflow-hidden" style="padding-top:4px;">
+<div class="card shadow py-2 px-2">
+    <div class="row">
+        <div class="col">
             <div class="px-4 pt-0 pb-4 cover">
                 <div class="media align-items-end profile-head">
                     <div class="profile mr-3"><img src="@Html.DisplayFor(model=>model.Picture)" alt="..." width="230" class="rounded mb-2 img-thumbnail"><a asp-action="Edit" asp-controller="Profiles" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
@@ -15,13 +15,14 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="px-2 py-2 rounded shadow-sm bg-light">
+        </div>
+        <div class="col">            
+            <div class="p-2 m-1 shadow-sm">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <h5 class="mb-0">Interests</h5>
-                    <a class="btn btn-sm" asp-action="Index" asp-controller="Interests">Edit</a>
+                    <a class="card-link" asp-action="Index" asp-controller="Interests">Edit</a>
                 </div>
-                <div class="p-2 rounded shadow-sm bg-secondary">
+                <div class="p-2 m-2 rounded">
                     @if (Model.Interests.Count != 0)
                     {
                         @foreach (var interest in Model.Interests)
@@ -35,43 +36,48 @@
                         <p class="font-italic mb-0">Try adding some interests to improve your profile.</p>
                     }
                 </div>
-                <a class="btn btn-dark btn-sm" asp-controller="Interests" asp-action="Create">Add</a>
-                </div>
-            <div class="py-2 px-2 rounded shadow-sm bg-light">
+                <a class="btn btn-success btn-sm" asp-controller="Interests" asp-action="Create">Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="py-2 px-2 rounded">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                     <h5 class="mb-0">Cars</h5>
                     <a class="btn btn-sm" asp-action="Index" asp-controller="Cars">Edit</a>
                 </div>
-                <div class="p-2 rounded shadow-sm bg-secondary">
-                    @if (Model.Cars.Count != 0)
-                    {
-                        @foreach (var Car in Model.Cars)
-                        {
-                        <p class="font-weight-bold mb-0">@(Car.Year + " " + Car.Make + " " + Car.Model)</p>
-                        <p class="font-italic mb-0"> @(Car.Description) </p>
-                        <div class="profile mr-3">
-                            @if (Car.CarImages != null)
-                            {
-                                @foreach (var image in Car.CarImages)
-                                {
-                                    <img src="@(image.Path)" alt="..." class="rounded mb-2 img-thumbnail">
-                                }
-                            }
-                        </div>
+                @if (Model.Cars.Count != 0)
+                {
 
-                        }
-                        }
-                        else
-                        {
-                        <p class="font-italic mb-0">Try adding some cars to improve your profile.</p>
-                        }
-                    </div>
-                    <a class="btn btn-dark btn-sm" asp-controller="Cars" asp-action="Create">Add</a>
-                    <div class="row">
-                        <!--Show users cars-->
-                        <div class="col-lg-6 mb-2 pr-lg-1"><img src="" alt="" class="img-fluid rounded shadow-sm"></div>
-                    </div>
+                    @foreach (var Car in Model.Cars)
+                    {
+                        <div class="m-2 p-2 shadow-sm text-center">
+                            <p class="font-weight-bold mb-0">@(Car.Year + " " + Car.Make + " " + Car.Model)</p>
+                            <p class="font-italic mb-0"> @(Car.Description) </p>
+                            <div class="profile mr-3">
+                                @if (Car.CarImages != null)
+                                {
+                                    @foreach (var image in Car.CarImages)
+                                    {
+                                        <img src="@(image.Path)" alt="..." class="mb-2 card-img-top">
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+
+                }
+                else
+                {
+                    <p class="font-italic mb-0">Try adding some cars to improve your profile.</p>
+                }
+                <a class="btn btn-dark btn-sm" asp-controller="Cars" asp-action="Create">Add</a>
+                <div class="row">
+                    <!--Show users cars-->
+                    <div class="col-lg-6 mb-2 pr-lg-1"><img src="" alt="" class="img-fluid rounded -sm"></div>
                 </div>
             </div>
+        </div>
     </div>
 </div>

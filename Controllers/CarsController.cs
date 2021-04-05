@@ -98,7 +98,7 @@ namespace Shiftin.Controllers
          */
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddCarImage([Bind("Id,Name,Year,Make,Model,Description,ProfileId,CarImages")] Car car)
+        public IActionResult AddCarImage([Bind("Id,Name,Year,Make,Model,Description,ProfileId,CarImages")] Car car)
         {
             
             car.CarImages.Add(new CarImage());
@@ -106,7 +106,7 @@ namespace Shiftin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RemoveCarImage([Bind("Id,Name,Year,Make,Model,Description,ProfileId,CarImages")] Car car,int carimage)
+        public IActionResult RemoveCarImage([Bind("Id,Name,Year,Make,Model,Description,ProfileId,CarImages")] Car car,int carimage)
         {
             var existingParent = _context.Car
                .Where(p => p.Id == car.Id)

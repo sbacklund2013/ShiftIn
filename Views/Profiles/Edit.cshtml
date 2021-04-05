@@ -22,6 +22,7 @@
                 <div class="form-group">
                     <label asp-for="Picture" class="control-label">Upload a picture of yourself or your car</label>
                     <input asp-for="Upload" accept="image/*" type="file" multiple>
+                    <input asp-for="Picture" hidden="hidden" />
                     <span asp-validation-for="Upload" class="text-danger"></span>
 
                 </div>

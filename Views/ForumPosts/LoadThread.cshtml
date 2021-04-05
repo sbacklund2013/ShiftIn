@@ -3,27 +3,43 @@
 @{
     ViewData["Title"] = "Thread View";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var author = ViewBag.post.Author;
 }
+<div class="card" style="">
 
-<h2>
-    @ViewBag.post.Title
-</h2>
-<p>
-    @ViewBag.post.Body
-</p>
-<hr />
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h3>
+                    @ViewBag.post.Title
+                </h3>
+                <p>
+                    @ViewBag.post.Body
+                </p>
+            </div>
 
-@foreach (var item in Model)
-{
-    <div class="card" style="">
-        <div class="card-body">
-            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-            <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Author.Username)</h6>
-            <p class="card-text">@Html.DisplayFor(modelItem => item.Body)</p>
-            <a asp-action="LoadThread" asp-route-id="@item.Id" class="card-link">View Thread</a>
-            <a asp-action="Reply" asp-route-id="@item.Id" class="card-link">Reply</a>
+
         </div>
+
+
+        <div class="row">
+            <div class="col">
+                <h6>By: @ViewBag.post.Author.Username</h6>
+                <input type="button" value="Reply" onclick="reply(@ViewBag.post.Id)" class="w-auto btn btn-sm btn-outline-dark">
+                <input type="button" value="Like" onclick="upvote(@ViewBag.post.Id)" class="w-auto btn btn-sm btn-outline-dark">
+
+            </div>
+        </div>
+        <hr />
+
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("_ForumPost", item)
+
+        }
     </div>
-}
-
-
+</div>
+<partial name="_UpvoteScriptpartial">
+    <partial name="_ReplyScriptspartial">
+        <partial name="_LikeScripts">
+            <partial name="_LoadReplyScriptsPartial">

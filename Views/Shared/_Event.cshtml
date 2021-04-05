@@ -1,0 +1,10 @@
+﻿@model ShiftIn.Models.Event
+<div class="card shadow" style="">
+    <div class="card-body">
+        <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(model => model.Location)</h6>
+        <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+        <a asp-action="Attend" asp-route-id="@Model.Id" class="btn btn-sm btn-success">Mark as Attending</a>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-sm btn-primary">View</a>
+    </div>
+</div>

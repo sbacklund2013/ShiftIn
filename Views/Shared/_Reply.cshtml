@@ -1,0 +1,10 @@
+﻿@model ShiftIn.Models.ForumPost
+    <div class="card">
+        <form asp-action="SubmitReply" asp-controller="ForumPosts" method="post" class="col-sm-6" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
+            <input value="@Model.Id" name="ParentId" type="hidden" />
+            <input hidden="hidden" name="Title" value="RE: @Model.Title" class="form-control" />
+            <textarea placeholder="Your reply" name="Body" class="form-control"></textarea>
+            <input type="submit" id="submit" value="Reply" class="btn btn-primary" />
+        </form>
+    </div>
+

@@ -159,7 +159,7 @@ namespace Shiftin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Username,Location,Upload")] Profile profile)
+        public async Task<IActionResult> Edit([Bind("Id,Username,Location,Upload,Picture")] Profile profile)
         {
             if (HttpContext.Session.GetInt32("ProfileId") != profile.Id)
             {
@@ -170,6 +170,27 @@ namespace Shiftin.Controllers
             {
                 try
                 {
+                    if (profile.Upload != null)
+                    {
+                        try
+                        {
+                            /////////////////////GET UPLOADED FILE////////////////////////////
+                            var file = Path.Combine(_environment.ContentRootPath, "wwwroot/ProfileImages", profile.Upload.FileName);
+                            using (var fileStream = new FileStream(file, FileMode.Create))
+                            {
+                                await profile.Upload.CopyToAsync(fileStream);
+                            }
+                            //SET DIRECTORY
+                            profile.Picture = "/ProfileImages/" + profile.Upload.FileName;
+                            /////////////////////////////////////////////////////////////////////////////////////
+                        }
+                        catch (Exception e)
+                        {
+                            
+                            return RedirectToPage("Error");
+                        }
+                    }
+
                     _context.Update(profile);
                     await _context.SaveChangesAsync();
                 }

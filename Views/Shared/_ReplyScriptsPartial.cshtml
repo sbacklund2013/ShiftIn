@@ -1,0 +1,15 @@
+﻿<script type="text/javascript">
+    function reply(pid) {
+        $.ajax({
+            async: true,
+            data: {
+                id: pid
+            },
+            type: "POST",
+            url: "@Url.Action("Reply")",
+            success: function (partialView) {
+                $('#' + pid).append(partialView);
+            }
+        });
+    };
+</script>

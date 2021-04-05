@@ -16,6 +16,7 @@ namespace ShiftIn.Models
         public int Id { get; set; }
         public int PostId { get; set; }
         public ForumPost Post { get; set; }
+        public int ProfileId { get; set; }
         public Profile Profile { get; set; }
     }
 }
