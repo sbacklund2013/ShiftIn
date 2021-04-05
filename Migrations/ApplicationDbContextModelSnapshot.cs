@@ -339,7 +339,7 @@ namespace Shiftin.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProfileId")
+                    b.Property<int>("ProfileId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -571,7 +571,9 @@ namespace Shiftin.Migrations
 
                     b.HasOne("ShiftIn.Models.Profile", "Profile")
                         .WithMany()
-                        .HasForeignKey("ProfileId");
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Post");
 

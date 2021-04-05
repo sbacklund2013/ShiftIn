@@ -14,8 +14,10 @@ namespace ShiftIn.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public int PostId { get; set; }
         public ForumPost Post { get; set; }
+        [Required]
         public int ProfileId { get; set; }
         public Profile Profile { get; set; }
     }
