@@ -78,6 +78,7 @@ __Current Feature List__
 	- [ ] Forum reply edit 	
 - [x] Forum search box
 - [x] Forum post upvote/like
+- [ ] Forum add images to posts
 - [x] Add cars to my profile
 	- [x] Add images to my cars
 	- [x] Add descriptions of car mods
