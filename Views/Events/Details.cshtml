@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
 <div class="card" style="">
     <div class="card-body">
         <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
@@ -15,7 +14,10 @@
         <hr />
         @foreach (var prof in Model.Attendees)
         {
-            <p class="card-text">@(prof.Username)</p>
+        <a class="card-link" asp-controller="Profiles"
+       asp-action="Details"
+       asp-route-id="@prof.Id">@prof.Username</a>
+       <br>
         }
         </div>
 </div>

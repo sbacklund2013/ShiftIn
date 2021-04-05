@@ -3,7 +3,9 @@
     <div class="">
         <div class="row">
             <div class="profile mr-3"><img src="@Html.DisplayFor(model=>model.Picture)" alt="..." width="50" class="rounded mb-2 img-thumbnail"></div>
-            <h6> @Html.DisplayFor(model => model.Username)</h6>
+            <a class="card-text text-black-50" asp-controller="Profiles"
+               asp-action="Details"
+               asp-route-id="@Model.Id">@Model.Username</a>
         </div>
 
     </div>
