@@ -4,22 +4,23 @@
 @{
     ViewData["Title"] = "Log in";
 }
+<div class="container text-center">
+    <img class="m-0 p-0" height="250" src="/Images/ShiftinLogo.svg" alt="logo">
+</div>
 
-<h1>@ViewData["Title"]</h1>
 <div class="row">
-    <div class="container">
+    <div class="container text-center col">
         <section>
             <form id="account" method="post">
-                <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
+                <div class="m-1">
+                    <img class="m-0 p-0" height="30" src="/Images/user.svg" alt="logo">
+                    <input placeholder="Email" class="" asp-for="Input.Email" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
+                <div class="m-1">
+                    <img class="m-0 p-0" height="30" src="/Images/padlock.svg" alt="logo">
+                    <input placeholder="Password" asp-for="Input.Password" class="" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
