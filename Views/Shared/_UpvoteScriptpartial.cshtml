@@ -6,9 +6,10 @@
                 url: "@Url.Action("Upvote")",
                 data: { id: pid },
                 dataType: "text",
-                success: function (msg) {
-                    if (msg == "OKAY") {
+                success: function (count) {
+                    if (count > 0) {
                         console.log("upvoted id: ".concat(pid));
+                        document.getElementById("p_" + pid).innerHTML = count;
                     } else {
                         alert(msg);
                         console.log("could not upvote id: ".concat(pid));

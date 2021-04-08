@@ -10,6 +10,7 @@ using Shiftin.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Serialization;
+using System.Security.Claims;
 
 namespace Shiftin.Controllers
 {
@@ -26,6 +27,20 @@ namespace Shiftin.Controllers
         // GET: ForumPosts
         public async Task<IActionResult> Index()
         {
+            //Get logged in User
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+            //Check if profileid is in the session
+            var profileid = HttpContext.Session.GetInt32("ProfileId");
+            if (profileid == null)
+            {
+                var profile = await _context.Profiles.Include(pr => pr.Interests).Include(pr => pr.Cars).ThenInclude(c => c.CarImages).FirstOrDefaultAsync(p => p.User.Id.Equals(userId));
+                if (profile != null)
+                {
+                    //Return profile view
+                    Profile userprofile = (Profile)profile;
+                    HttpContext.Session.SetInt32("ProfileId", userprofile.Id);
+                }
+            }
             var forumPost = await _context.Posts.Include("Author").Where(fp => fp.ParentId == 0).ToListAsync();
             foreach(ForumPost post in forumPost)
             {
@@ -191,19 +206,20 @@ namespace Shiftin.Controllers
         }
         //Like
         [HttpPost]
-        public string Upvote(int id)
+        public int Upvote(int id)
         {
             //check profile logged in
             var profileid = HttpContext.Session.GetInt32("ProfileId");
             if (profileid == null)
             {
-                return "Could not find your profile, did your session expire? revisit the your profile to refresh";
+                return 0;
             }
             //check if already liked
             List<Like> existing = (List<Like>)_context.Likes.Where(p => p.PostId == id && p.ProfileId == (int) profileid).ToList();
+            List<Like> existingtotal = (List<Like>)_context.Likes.Where(p => p.PostId == id).ToList();
             if (existing.Count >= 1)
             {
-                return "You already liked this";
+                return existingtotal.Count;
             }
             //gopher it
             else
@@ -213,7 +229,7 @@ namespace Shiftin.Controllers
                 newlike.ProfileId = profileid.GetValueOrDefault();
                 _context.Add(newlike);
                 _context.SaveChangesAsync();
-                return "OKAY";
+                return existingtotal.Count +1;
             }
         }
 
